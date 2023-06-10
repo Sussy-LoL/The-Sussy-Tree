@@ -1,8 +1,8 @@
 let modInfo = {
-	name: "The ??? Tree",
-	id: "mymod",
-	author: "nobody",
-	pointsName: "points",
+	name: "The Sussy Tree",
+	id: "Sussymod",
+	author: "SussyLOL",
+	pointsName: "点数",
 	modFiles: ["layers.js", "tree.js"],
 
 	discordName: "",
@@ -13,8 +13,8 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.0",
-	name: "Literally nothing",
+	num: "0.2",
+	name: "Sus Layer",
 }
 
 let changelog = `<h1>Changelog:</h1><br>
@@ -43,6 +43,10 @@ function getPointGen() {
 		return new Decimal(0)
 
 	let gain = new Decimal(1)
+	if (hasUpgrade('p', 11)) gain = gain.times(2)
+	if (hasUpgrade('p', 12)) gain = gain.times(upgradeEffect('p', 12))
+	if (hasUpgrade('p', 21)) gain = gain.times(upgradeEffect('p', 21))
+	if (hasUpgrade('p', 23)) gain = gain.add(new Decimal(2).times(upgradeEffect('p', 12)).times(upgradeEffect('p', 13)).times(upgradeEffect('p', 21)).times(upgradeEffect('p', 22)).pow(0.2))
 	return gain
 }
 
