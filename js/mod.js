@@ -1,5 +1,5 @@
 let modInfo = {
-	name: "The Sussy Tree",
+	name: "嫌疑树",
 	id: "Sussymod",
 	author: "SussyLOL",
 	pointsName: "点数",
@@ -13,16 +13,16 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.2",
-	name: "Sus Layer",
+	num: "0.2.1",
+	name: "嫌疑层",
 }
 
-let changelog = `<h1>Changelog:</h1><br>
-	<h3>v0.0</h3><br>
-		- Added things.<br>
-		- Added stuff.`
+let changelog = `<h1>更新公告:</h1><br>
+	<h3>v0.2.1</h3><br>
+		- 增加嫌疑层。<br>
+		- 中文化。`
 
-let winText = `Congratulations! You have reached the end and beaten this game, but for now...`
+let winText = `恭喜!你达到了结局并通关了游戏!但现在...`
 
 // If you add new functions anywhere inside of a layer, and those functions have an effect when called, add them here.
 // (The ones here are examples, all official functions are already taken care of)

@@ -35,6 +35,12 @@ function changeTheme() {
 function getThemeName() {
 	return options.theme? options.theme : "default";
 }
+function getThemeCnName() {
+	if (getThemeName() == 'default')
+		return '默认'
+	else if ((getThemeName() == 'aqua'))
+		return '水'
+}
 
 function switchTheme() {
 	let index = themes.indexOf(options.theme)

@@ -46,7 +46,7 @@ function toggleAuto(toggle) {
 	needCanvasUpdate=true
 }
 
-const MS_DISPLAYS = ["ALL", "LAST, AUTO, INCOMPLETE", "AUTOMATION, INCOMPLETE", "INCOMPLETE", "NONE"];
+const MS_DISPLAYS = ["全部", "最后的,自动,未完成的", "自动化,未完成的", "未完成的", "不显示"];
 
 const MS_SETTINGS = ["always", "last", "automation", "incomplete", "never"];
 

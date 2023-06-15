@@ -1,5 +1,5 @@
 addLayer("p", {
-    name: "prestige", // This is optional, only used in a few places, If absent it just uses the layer id.
+    name: "声望", // This is optional, only used in a few places, If absent it just uses the layer id.
     symbol: "P", // This appears on the layer's node. Default is the id with the first letter capitalized
     position: 0, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
     startData() { return {
@@ -96,7 +96,7 @@ addLayer("p", {
     layerShown(){return true}
 })
 addLayer("s", {
-    name: "sus", // This is optional, only used in a few places, If absent it just uses the layer id.
+    name: "嫌疑", // This is optional, only used in a few places, If absent it just uses the layer id.
     symbol: "S", // This appears on the layer's node. Default is the id with the first letter capitalized
     position: 0, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
     startData() { return {
@@ -137,7 +137,7 @@ addLayer("a", {
     row: "side",
     layerShown() {return true}, 
     tooltip() { // Optional, tooltip displays when the layer is locked
-        return ("Achievements")
+        return ("成就")
     },
     achievements: {
         11: {
@@ -183,7 +183,7 @@ addLayer("a", {
     },
     tabFormat: [
         "blank", 
-        ["display-text", function() { return "Achievements: "+player.a.achievements.length+"/"+(Object.keys(tmp.a.achievements).length-2) }], 
+        ["display-text", function() { return "成就:"+player.a.achievements.length+"/"+(Object.keys(tmp.a.achievements).length-2) }], 
         "blank", "blank",
         "achievements",
     ],
