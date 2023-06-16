@@ -18,7 +18,7 @@ addLayer("p", {
         if (hasUpgrade('p', 13)) mult = mult.times(upgradeEffect('p', 13))
         if (hasUpgrade('p', 22)) mult = mult.times(upgradeEffect('p', 22))
         if (hasUpgrade('p', 31)) mult = mult.add(new Decimal(2).times(upgradeEffect('p', 12)).times(upgradeEffect('p', 13)).times(upgradeEffect('p', 21)).times(upgradeEffect('p', 22)).pow(0.2))
-        if (player.s.unlocked) mult = mult.times(player.s.points.add(1))
+        if (player.s.unlocked) mult = mult.times(tmp.s.effect)
         return mult
     },
     gainExp() { // Calculate the exponent on main currency from bonuses
@@ -90,6 +90,11 @@ addLayer("p", {
             cost: new Decimal(10000),
         },
     },
+    doReset(resettingLayer) {
+        let keep = [];
+        if (hasMilestone("s", 0) && resettingLayer=="b") keep.push("upgrades")
+        if (layers[resettingLayer].row > this.row) layerDataReset("p", keep)
+    },
     hotkeys: [
         {key: "p", description: "P: 声望重置", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
     ],
@@ -117,12 +122,41 @@ addLayer("s", {
     gainExp() { // Calculate the exponent on main currency from bonuses
         return new Decimal(1)
     },
+    effect() {
+        let effect = new Decimal(1)
+        effect = effect.add(player.s.points)
+        if (hasUpgrade('s', 11)) effect = effect.times(3)
+        return effect
+    },
     effectDescription() {
-        return ('给予声望点数'+format(player.s.points.add(1))+'x加成')
+        return ('给予声望点数'+format(tmp.s.effect)+'x加成')
     },
     row: 1, // Row the layer is in on the tree (0 is the first row)
     branches:["p"],
     upgrades: {
+        11:{
+            title: "声望给你多少?我出三倍",
+            description: "三倍声望增益。",
+            cost: new Decimal(3),
+        },
+    },
+    canBuyMax() { return hasMilestone("s", 1) },
+    milestones: {
+        0: {
+            requirementDescription: "8嫌疑点数",
+            done() { return player.s.best.gte(8) },
+            effectDescription: "保留声望升级。",
+        },
+        1: {
+            requirementDescription: "15嫌疑点数",
+            done() { return player.s.best.gte(15) },
+            effectDescription: "可以最大化购买嫌疑点数。",
+        },
+    },
+    doReset(resettingLayer) {
+        let keep = [];
+        if (resettingLayer=="s" && player.keepGoing == true) addAchievement("sa",12)
+        if (layers[resettingLayer].row > this.row) layerDataReset("s", keep)
     },
     hotkeys: [
         {key: "s", description: "S: 嫌疑望置", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
@@ -187,5 +221,36 @@ addLayer("a", {
         "blank", "blank",
         "achievements",
     ],
-}, 
-)
+})
+addLayer("sa", {
+    startData() { return {
+        unlocked: true,
+    }},
+    color: "blue",
+    row: "side",
+    symbol: "SA",
+    layerShown() { return player.sa.achievements.length>=1 }, 
+    tooltip() { // Optional, tooltip displays when the layer is locked
+        return ("隐藏成就")
+    },
+    achievements: {
+        11: {
+            name: "我很blue",
+            done() { return getThemeName()=='aqua' },
+            tooltip: "切换主题为“水”。",
+            goalTooltip: "未知"
+        },
+        12: {
+            name: "撒币大佬",
+            done() { return false },
+            tooltip: "在游戏结束后嫌疑重置。",
+            goalTooltip: "未知"
+        },
+    },
+    tabFormat: [
+        "blank", 
+        ["display-text", function() { return "成就:"+player.sa.achievements.length+"/"+(Object.keys(tmp.sa.achievements).length-2) }], 
+        "blank", "blank",
+        "achievements",
+    ],
+})

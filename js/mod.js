@@ -18,8 +18,8 @@ let VERSION = {
 }
 
 let changelog = `<h1>更新公告:</h1><br>
-	<h3>v0.2.1</h3><br>
-		- 增加嫌疑层。<br>
+	<h3>v0.2.2</h3><br>
+		- 增加嫌疑层升级。<br>
 		- 中文化。`
 
 let winText = `恭喜!你达到了结局并通关了游戏!但现在...`
@@ -27,6 +27,10 @@ let winText = `恭喜!你达到了结局并通关了游戏!但现在...`
 // If you add new functions anywhere inside of a layer, and those functions have an effect when called, add them here.
 // (The ones here are examples, all official functions are already taken care of)
 var doNotCallTheseFunctionsEveryTick = ["blowUpEverything"]
+
+function addAchievement(layer,id) {
+	player[layer].achievements.push(id);doPopup("achievement", tmp[layer].achievements[id].name, "成就达成!", 3, tmp[layer].color);
+}
 
 function getStartPoints(){
     return new Decimal(modInfo.initialStartPoints)
