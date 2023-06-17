@@ -167,7 +167,7 @@ var systemComponents = {
                 <td><button class="opt" onclick="toggleOpt('hqTree')">高画质树:{{ options.hqTree?"开":"关" }}</button></td>
             </tr>
             <tr>
-                <td><button class="opt" onclick="toggleOpt('hideChallenges')">已完成的的挑战:{{ options.hideChallenges?"隐藏":"展示" }}</button></td>
+                <td><button class="opt" onclick="toggleOpt('hideChallenges')">已完成的挑战:{{ options.hideChallenges?"隐藏":"展示" }}</button></td>
                 <td><button class="opt" onclick="toggleOpt('forceOneTab'); needsCanvasUpdate = true">单页模式:{{ options.forceOneTab?"保持":"自动" }}</button></td>
 				<td><button class="opt" onclick="toggleOpt('forceTooltips'); needsCanvasUpdate = true">Shift+Click 来切换工具提示:{{ options.forceTooltips?"开":"关" }}</button></td>
 				</tr> 

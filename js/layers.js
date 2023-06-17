@@ -92,7 +92,7 @@ addLayer("p", {
     },
     doReset(resettingLayer) {
         let keep = [];
-        if (hasMilestone("s", 0) && resettingLayer=="b") keep.push("upgrades")
+        if (hasMilestone("s", 0) && resettingLayer=="s") keep.push("upgrades")
         if (layers[resettingLayer].row > this.row) layerDataReset("p", keep)
     },
     hotkeys: [
@@ -117,6 +117,8 @@ addLayer("s", {
     exponent: 0.5, // Prestige currency exponent
     gainMult() { // Calculate the multiplier for main currency from bonuses
         mult = new Decimal(1)
+        if (hasUpgrade('s', 12)) mult = mult.times(upgradeEffect('s', 12))
+        if (hasUpgrade('s', 13)) mult = mult.times(upgradeEffect('s', 13))
         return mult
     },
     gainExp() { // Calculate the exponent on main currency from bonuses
@@ -126,6 +128,8 @@ addLayer("s", {
         let effect = new Decimal(1)
         effect = effect.add(player.s.points)
         if (hasUpgrade('s', 11)) effect = effect.times(3)
+        if (hasUpgrade('s', 14)) effect = effect.times(upgradeEffect('s', 14))
+        if (hasUpgrade('s', 21)) effect = effect.times(upgradeEffect('s', 21))
         return effect
     },
     effectDescription() {
@@ -139,23 +143,59 @@ addLayer("s", {
             description: "三倍声望增益。",
             cost: new Decimal(3),
         },
+        12:{
+            title: "自我增幅 3.0",
+            description: "嫌疑点数提升嫌疑点数。",
+            effect() {
+                return player[this.layer].points.add(1).pow(0.15)
+            },
+            effectDisplay() { return format(upgradeEffect(this.layer, this.id))+"x" },
+            cost: new Decimal(8),
+        },
+        13:{
+            title: "超多嫌疑点数",
+            description: "根据声望点数提升嫌疑点数。",
+            cost: new Decimal(15),
+            effect() {
+                return player[this.layer].points.add(1).pow(0.5)
+            },
+            effectDisplay() { return format(upgradeEffect(this.layer, this.id))+"x" }, // Add formatting to the effect        
+        },
+        14:{
+            title: "效果提升",
+            description: "根据声望点数提升声望增益。",
+            cost: new Decimal(30),
+            effect() {
+                return player[this.layer].points.add(1).pow(0.3)
+            },
+            effectDisplay() { return format(upgradeEffect(this.layer, this.id))+"x" }, // Add formatting to the effect        
+        },
+        21:{
+            title: "效果提升 2.0",
+            description: "根据点数提升声望增益。",
+            cost: new Decimal(50),
+            effect() {
+                return player.points.add(1).pow(0.15)
+            },
+            effectDisplay() { return format(upgradeEffect(this.layer, this.id))+"x" }, // Add formatting to the effect        
+        },
     },
     canBuyMax() { return hasMilestone("s", 1) },
     milestones: {
         0: {
-            requirementDescription: "8嫌疑点数",
-            done() { return player.s.best.gte(8) },
-            effectDescription: "保留声望升级。",
+            requirementDescription: "5嫌疑点数",
+            done() { return player.s.best.gte(5) },
+            effectDescription: "重置保留声望升级。",
         },
         1: {
-            requirementDescription: "15嫌疑点数",
-            done() { return player.s.best.gte(15) },
+            requirementDescription: "8嫌疑点数",
+            done() { return player.s.best.gte(8) },
             effectDescription: "可以最大化购买嫌疑点数。",
         },
     },
     doReset(resettingLayer) {
         let keep = [];
-        if (resettingLayer=="s" && player.keepGoing == true) addAchievement("sa",12)
+        if (resettingLayer=="s" && player.keepGoing == true && !(hasAchievement("sa",12))) addAchievement("sa",12)
         if (layers[resettingLayer].row > this.row) layerDataReset("s", keep)
     },
     hotkeys: [
@@ -249,7 +289,7 @@ addLayer("sa", {
     },
     tabFormat: [
         "blank", 
-        ["display-text", function() { return "成就:"+player.sa.achievements.length+"/"+(Object.keys(tmp.sa.achievements).length-2) }], 
+        ["display-text", function() { return "隐藏成就:"+player.sa.achievements.length+"/"+(Object.keys(tmp.sa.achievements).length-2) }], 
         "blank", "blank",
         "achievements",
     ],
