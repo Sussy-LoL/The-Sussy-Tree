@@ -44,12 +44,11 @@ addLayer("p", {
         },
         13:{
             title: "更多声望点数",
-            description: "根据点数提升声望点数。",
+            description: "根据点数降低声望点数要求。",
             cost: new Decimal(5),
             effect() {
                 return player.points.add(1).pow(0.15)
             },
-            effectDisplay() { return format(upgradeEffect(this.layer, this.id))+"x" }, // Add formatting to the effect        
         },
         21:{
             title: "自我增幅",
@@ -62,7 +61,7 @@ addLayer("p", {
         },
         22:{
             title: "自我增幅 2.0",
-            description: "根据声望点数提升声望点数。",
+            description: "根据声望点数降低声望点数要求。",
             cost: new Decimal(20),
             effect() {
                 return player[this.layer].points.add(1).pow(0.15)
@@ -70,13 +69,13 @@ addLayer("p", {
             effectDisplay() { return format(upgradeEffect(this.layer, this.id))+"x" }, // Add formatting to the effect        
         },
         23:{
-            title: "再乘一遍",
+            title: "乘一遍",
             description: "将第1~5升级的乘数提升点数。",
             cost: new Decimal(100),
         },
         31:{
-            title: "再乘一遍 2.0",
-            description: "将第1~5升级的乘数提升声望点数。",
+            title: "再乘一遍",
+            description: "将第1~5升级的乘数降低声望点数要求。",
             cost: new Decimal(150),
         },
         32:{
@@ -86,13 +85,20 @@ addLayer("p", {
         },
         33:{
             title: "受疑层级",
-            description: "解锁嫌疑层",
+            description: "解锁嫌疑层。",
             cost: new Decimal(10000),
+        },
+        41:{
+            title: "不换汤也不换药",
+            description: "嫌疑重置不重置点数。",
+            cost: new Decimal(1e6),
+            //这里要整个显示
         },
     },
     doReset(resettingLayer) {
         let keep = [];
         if (hasMilestone("s", 0) && resettingLayer=="s") keep.push("upgrades")
+        if (hasUpgrade("p", 41) && resettingLayer=="s") keep.push("points")
         if (layers[resettingLayer].row > this.row) layerDataReset("p", keep)
     },
     hotkeys: [
@@ -145,7 +151,7 @@ addLayer("s", {
         },
         12:{
             title: "自我增幅 3.0",
-            description: "嫌疑点数提升嫌疑点数。",
+            description: "嫌疑点数降低嫌疑点数要求。",
             effect() {
                 return player[this.layer].points.add(1).pow(0.15)
             },
@@ -154,7 +160,7 @@ addLayer("s", {
         },
         13:{
             title: "超多嫌疑点数",
-            description: "根据声望点数提升嫌疑点数。",
+            description: "根据声望点数降低嫌疑点数要求。",
             cost: new Decimal(15),
             effect() {
                 return player[this.layer].points.add(1).pow(0.5)
@@ -163,7 +169,7 @@ addLayer("s", {
         },
         14:{
             title: "效果提升",
-            description: "根据声望点数提升声望增益。",
+            description: "根据嫌疑点数提升声望增益。",
             cost: new Decimal(30),
             effect() {
                 return player[this.layer].points.add(1).pow(0.3)
@@ -178,6 +184,11 @@ addLayer("s", {
                 return player.points.add(1).pow(0.15)
             },
             effectDisplay() { return format(upgradeEffect(this.layer, this.id))+"x" }, // Add formatting to the effect        
+        },
+        22:{
+            title: "新的没去,旧的又来",
+            description: "解锁更多声望升级。",
+            cost: new Decimal(75),
         },
     },
     canBuyMax() { return hasMilestone("s", 1) },
@@ -253,6 +264,11 @@ addLayer("a", {
             name: "你很sus",
             done() { return hasUpgrade('p',33) },
             tooltip: "解锁嫌疑层。",
+        },
+        24: {
+            name: "8代表着∞i",
+            done() { return player.s.points.gte(8) },
+            tooltip: "得到8个嫌疑点数。",
         },
     },
     tabFormat: [
