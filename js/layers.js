@@ -92,6 +92,7 @@ addLayer("p", {
             title: "不换汤也不换药",
             description: "嫌疑重置不重置点数。",
             cost: new Decimal(1e6),
+            unlocked() {return hasUpgrade("s",22)},
             //这里要整个显示
         },
     },
