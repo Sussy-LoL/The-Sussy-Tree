@@ -104,7 +104,7 @@ addLayer("p", {
     hotkeys: [
         {key: "p", description: "P: 声望重置", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
     ],
-    layerShown(){return true}
+    layerShown(){return hasUpgrade("s",22)}
 })
 addLayer("s", {
     name: "嫌疑", // This is optional, only used in a few places, If absent it just uses the layer id.
